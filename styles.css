@@ -135,6 +135,9 @@ input[type="number"]:focus { outline: 2px solid var(--red); border-color: transp
 .stat-label { font-size: 13px; color: var(--muted); font-weight: 600; }
 .stat-value { font-size: 1.05rem; font-weight: 700; }
 .stat.highlight .stat-value { color: var(--red-dark); }
+.stat.net { border-top: 1px solid var(--line); }
+.stat.net .stat-label { color: var(--ok); }
+.stat.net .stat-value { color: var(--ok); }
 .stat.big .stat-value { font-size: 1.5rem; }
 
 /* Lists */

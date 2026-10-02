@@ -40,6 +40,15 @@
     return usd(e[0]) + " – " + usd(e[1]);
   }
 
+  /* Neto tras impuestos (retención EE. UU. / IVA / IRPF) según "Del bruto al neto" */
+  function netStr(views) {
+    if (window.YTTax && YTTax.net) {
+      var n = YTTax.net(views);
+      return usd(n[0]) + " – " + usd(n[1]);
+    }
+    return earnStr(views);
+  }
+
   /* ---------- utilidades de red ---------- */
   function fetchJSON(url, timeout) {
     return new Promise(function (resolve, reject) {
@@ -146,8 +155,11 @@
       kv("Vistas totales", compact(stats.views) + " (" + n0(stats.views) + ")") +
       kv("Número de vídeos", n0(stats.videos)) +
       kv("Vistas medias por vídeo", compact(perVideo)) +
-      '<div class="stat highlight big"><span class="stat-label">Ganancias totales estimadas (canal)</span><span class="stat-value">' + earnStr(stats.views) + '</span></div>' +
-      '<div class="stat highlight"><span class="stat-label">Ganancias medias por vídeo</span><span class="stat-value">' + earnStr(perVideo) + '</span></div>';
+      '<div class="stat highlight big"><span class="stat-label">Ganancias totales estimadas (bruto)</span><span class="stat-value">' + earnStr(stats.views) + '</span></div>' +
+      '<div class="stat highlight"><span class="stat-label">Ganancias medias por vídeo (bruto)</span><span class="stat-value">' + earnStr(perVideo) + '</span></div>' +
+      '<div class="stat net"><span class="stat-label">Neto tras impuestos (canal)</span><span class="stat-value">' + netStr(stats.views) + '</span></div>' +
+      '<div class="stat net"><span class="stat-label">Neto medio por vídeo</span><span class="stat-value">' + netStr(perVideo) + '</span></div>' +
+      '<p class="muted small">El <strong>neto</strong> descuenta retención/IVA/IRPF según <a href="#neto">Del bruto al neto</a>.</p>';
     el.classList.remove("hidden");
   }
 
@@ -164,14 +176,23 @@
       '</div>' +
       kv("Vistas", compact(stats.views) + " (" + n0(stats.views) + ")") +
       kv("Likes", n0(stats.likes)) +
-      '<div class="stat highlight big"><span class="stat-label">Ganancias estimadas del vídeo</span><span class="stat-value">' + earnStr(stats.views) + '</span></div>' +
-      '<p class="muted small">Vistas vía ' + esc(stats.source) + ' · estimación orientativa.</p>';
+      '<div class="stat highlight big"><span class="stat-label">Ganancias estimadas del vídeo (bruto)</span><span class="stat-value">' + earnStr(stats.views) + '</span></div>' +
+      '<div class="stat net"><span class="stat-label">Neto tras impuestos</span><span class="stat-value">' + netStr(stats.views) + '</span></div>' +
+      '<p class="muted small">Vistas vía ' + esc(stats.source) + ' · el neto descuenta retención/IVA/IRPF.</p>';
     el.classList.remove("hidden");
   }
 
   function setMsg(el, text, kind) {
     el.textContent = text || "";
     el.className = "msg" + (kind ? " " + kind : "");
+  }
+
+  /* ---------- estado (re-render al cambiar los impuestos) ---------- */
+  var last = { channel: null, video: null };
+
+  function refresh() {
+    if (last.channel) renderChannel(document.getElementById("channelResult"), last.channel.info, last.channel.stats);
+    if (last.video) renderVideo(document.getElementById("videoResult"), last.video.id, last.video.meta, last.video.stats);
   }
 
   /* ---------- handlers ---------- */
@@ -190,6 +211,7 @@
         return channelStats(info.id).then(function (stats) { return { info: info, stats: stats }; });
       })
       .then(function (r) {
+        last.channel = { info: r.info, stats: r.stats };
         renderChannel(out, r.info, r.stats);
         setMsg(msg, "✅ Datos obtenidos.", "ok");
       })
@@ -208,7 +230,11 @@
 
     btn.disabled = true; setMsg(msg, "⏳ Consultando el vídeo…", "load");
     Promise.all([videoViews(id), videoMeta(id)])
-      .then(function (r) { renderVideo(out, id, r[1], r[0]); setMsg(msg, "✅ Datos obtenidos.", "ok"); })
+      .then(function (r) {
+        last.video = { id: id, meta: r[1], stats: r[0] };
+        renderVideo(out, id, r[1], r[0]);
+        setMsg(msg, "✅ Datos obtenidos.", "ok");
+      })
       .catch(function (e) { setMsg(msg, "⚠️ " + (e && e.message ? e.message : "No se pudo obtener el vídeo."), "err"); })
       .finally(function () { btn.disabled = false; });
   }
@@ -225,6 +251,12 @@
     var vb = document.getElementById("videoBtn"), vu = document.getElementById("videoUrl");
     if (vb) vb.addEventListener("click", runVideo);
     if (vu) vu.addEventListener("keydown", function (e) { if (e.key === "Enter") runVideo(); });
+
+    /* Re-render del neto cuando cambian los ajustes fiscales */
+    ["usRate", "usShare", "irpf", "rpmLow", "rpmHigh"].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener("input", refresh);
+    });
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);

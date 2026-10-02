@@ -121,8 +121,17 @@
             <span class="stat-label">Ganancias anuales proyectadas</span>
             <span class="stat-value" id="earnYear">$10.439 – $17.374</span>
           </div>
+          <div class="stat net">
+            <span class="stat-label">Neto tras impuestos / mes</span>
+            <span class="stat-value" id="netMonth">—</span>
+          </div>
+          <div class="stat net">
+            <span class="stat-label">Neto tras impuestos / año</span>
+            <span class="stat-value" id="netYear">—</span>
+          </div>
           <p class="muted small">
-            Rango según tu engagement (mayor engagement → anuncios mejor pagados y mayor variación).
+            Rango según tu engagement (mayor engagement → anuncios mejor pagados y mayor variación). El
+            <strong>neto</strong> descuenta IVA/retención/IRPF según los ajustes de <a href="#neto">Del bruto al neto</a>.
           </p>
         </div>
       </div>
@@ -354,6 +363,7 @@
     <p class="muted small">Hecha para creadores que quieren entender sus ingresos potenciales.</p>
   </footer>
 
+  <script src="tax-core.js"></script>
   <script src="script.js"></script>
   <script src="chart.js"></script>
   <script src="tax.js"></script>

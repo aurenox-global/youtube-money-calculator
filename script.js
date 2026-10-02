@@ -18,6 +18,8 @@
   var earnDay = document.getElementById("earnDay");
   var earnMonth = document.getElementById("earnMonth");
   var earnYear = document.getElementById("earnYear");
+  var netMonth = document.getElementById("netMonth");
+  var netYear = document.getElementById("netYear");
 
   var nf0 = new Intl.NumberFormat("es-ES", { maximumFractionDigits: 0 });
   var nf2 = new Intl.NumberFormat("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -62,6 +64,10 @@
     earnMonth.textContent = usd(dayLow * DAYS_MONTH) + " – " + usd(dayHigh * DAYS_MONTH);
     earnYear.textContent = usd(dayLow * DAYS_YEAR) + " – " + usd(dayHigh * DAYS_YEAR);
 
+    var taxF = (window.YTTax && YTTax.factor) ? YTTax.factor() : 1;
+    if (netMonth) netMonth.textContent = usd(dayLow * DAYS_MONTH * taxF) + " – " + usd(dayHigh * DAYS_MONTH * taxF);
+    if (netYear) netYear.textContent = usd(dayLow * DAYS_YEAR * taxF) + " – " + usd(dayHigh * DAYS_YEAR * taxF);
+
     setFill(viewsRange);
     setFill(engagement);
   }
@@ -69,6 +75,12 @@
   [viewsRange, engagement, rpmLow, rpmHigh].forEach(function (el) {
     el.addEventListener("input", calculate);
     el.addEventListener("change", calculate);
+  });
+
+  /* Recalcula el neto cuando cambian los ajustes fiscales */
+  ["usRate", "usShare", "irpf"].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener("input", calculate);
   });
 
   calculate();
