@@ -10,353 +10,372 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="#top">
+    <a class="brand" href="#inicio" data-target="inicio">
       <span class="brand-mark">▶</span>
       <span class="brand-name">Calculadora de Dinero en YouTube</span>
     </a>
-    <nav class="site-nav">
-      <a href="#calculadora">Calculadora</a>
-      <a href="#proyeccion">Proyección</a>
-      <a href="#por-enlace">Por enlace</a>
-      <a href="#impuestos">Reparto e impuestos</a>
-      <a href="#neto">Del bruto al neto</a>
-      <a href="#factores">4 Factores</a>
-      <a href="#monetizacion">Monetización</a>
-    </nav>
   </header>
 
-  <main id="top">
-    <section class="hero">
-      <h1>Calculadora de Dinero en YouTube: Calcula Cuánto Puedes Ganar</h1>
-      <p class="hero-sub">
-        Herramienta gratuita para estimar las ganancias de un vídeo o canal de YouTube a partir de
-        tus visualizaciones, engagement y CPM. Descubre tu potencial diario, mensual y anual.
-      </p>
-      <div class="hero-badges">
-        <span>📊 Estimación por rango</span>
-        <span>💸 Reparto 55 % creador / 45 % YouTube</span>
-        <span>⏱️ Resultados al instante</span>
-      </div>
-    </section>
+  <div class="layout">
+    <aside class="sidebar">
+      <nav>
+        <a href="#inicio" data-target="inicio">🏠 Inicio</a>
+        <a href="#calculadora" data-target="calculadora" class="active">📊 Calculadora</a>
+        <a href="#proyeccion" data-target="proyeccion">📈 Proyección</a>
+        <a href="#por-enlace" data-target="por-enlace">🔗 Por enlace</a>
+        <a href="#impuestos" data-target="impuestos">💸 Reparto e impuestos</a>
+        <a href="#neto" data-target="neto">🧾 Del bruto al neto</a>
+        <a href="#factores" data-target="factores">🧩 4 Factores</a>
+        <a href="#como-funciona" data-target="como-funciona">📖 Cómo funciona</a>
+        <a href="#monetizacion" data-target="monetizacion">✅ Monetización</a>
+      </nav>
+    </aside>
 
-    <section id="calculadora" class="card calculator">
-      <h2>Calcula tus ganancias</h2>
-      <p class="muted">Arrastra los controles para estimar tus ingresos potenciales.</p>
+    <main class="content" id="top">
 
-      <div class="calc-grid">
-        <div class="controls">
-          <div class="field">
-            <label for="viewsRange">
-              Vistas de vídeo diarias
-              <output id="viewsOut" class="out">20.000 vistas/día</output>
-            </label>
-            <input id="viewsRange" type="range" min="0" max="1000000" step="1000" value="20000" />
-            <div class="range-hint"><span>0</span><span>1.000.000</span></div>
-          </div>
+      <!-- INICIO -->
+      <section id="inicio" class="panel hero">
+        <h1>Calculadora de Dinero en YouTube: Calcula Cuánto Puedes Ganar</h1>
+        <p class="hero-sub">
+          Herramienta gratuita para estimar las ganancias de un vídeo o canal de YouTube a partir de
+          tus visualizaciones, engagement y CPM. Descubre tu potencial diario, mensual y anual.
+        </p>
+        <div class="hero-badges">
+          <span>📊 Estimación por rango</span>
+          <span>💸 Reparto 55 % creador / 45 % YouTube</span>
+          <span>🔗 Datos oficiales de la API de YouTube</span>
+          <span>⏱️ Resultados al instante</span>
+        </div>
+        <p class="muted small">Usa el menú lateral para cambiar de sección sin desplazarte.</p>
+      </section>
 
-          <div class="field">
-            <label for="engagement">
-              Tasa de engagement media
-              <output id="engOut" class="out">3,0 %</output>
-            </label>
-            <input id="engagement" type="range" min="0" max="20" step="0.1" value="3" />
-            <div class="range-hint"><span>0 %</span><span>20 %</span></div>
-          </div>
+      <!-- CALCULADORA -->
+      <section id="calculadora" class="panel card calculator active">
+        <h2>Calcula tus ganancias</h2>
+        <p class="muted">Arrastra los controles para estimar tus ingresos potenciales.</p>
 
-          <div class="field">
-            <label for="niche">Nicho del canal <span class="muted small">(ajusta el RPM automáticamente)</span></label>
-            <select id="niche">
-              <option data-low="1.43" data-high="2.38" selected>General / mixto</option>
-              <option data-low="5.00" data-high="12.00">Finanzas e inversión</option>
-              <option data-low="4.00" data-high="10.00">Marketing y negocios</option>
-              <option data-low="3.00" data-high="8.00">Tecnología y software</option>
-              <option data-low="3.00" data-high="8.00">Inmobiliaria</option>
-              <option data-low="2.00" data-high="5.00">Salud y fitness</option>
-              <option data-low="2.00" data-high="4.50">Educación</option>
-              <option data-low="1.50" data-high="4.00">Belleza y moda</option>
-              <option data-low="1.50" data-high="4.00">Automoción</option>
-              <option data-low="1.20" data-high="3.50">Viajes</option>
-              <option data-low="1.00" data-high="3.00">Cocina y gastronomía</option>
-              <option data-low="1.00" data-high="3.00">Deportes</option>
-              <option data-low="0.80" data-high="2.50">Gaming</option>
-              <option data-low="0.50" data-high="2.00">Entretenimiento / vlogs</option>
-              <option data-low="0.30" data-high="1.20">Música / infantil</option>
-            </select>
-          </div>
-
-          <div class="field two">
-            <div>
-              <label for="rpmLow">RPM bajo (USD / 1.000 vistas)</label>
-              <input id="rpmLow" type="number" min="0" step="0.01" value="1.43" />
+        <div class="calc-grid">
+          <div class="controls">
+            <div class="field">
+              <label for="viewsRange">
+                Vistas de vídeo diarias
+                <output id="viewsOut" class="out">20.000 vistas/día</output>
+              </label>
+              <input id="viewsRange" type="range" min="0" max="1000000" step="1000" value="20000" />
+              <div class="range-hint"><span>0</span><span>1.000.000</span></div>
             </div>
-            <div>
-              <label for="rpmHigh">RPM alto (USD / 1.000 vistas)</label>
-              <input id="rpmHigh" type="number" min="0" step="0.01" value="2.38" />
+
+            <div class="field">
+              <label for="engagement">
+                Tasa de engagement media
+                <output id="engOut" class="out">3,0 %</output>
+              </label>
+              <input id="engagement" type="range" min="0" max="20" step="0.1" value="3" />
+              <div class="range-hint"><span>0 %</span><span>20 %</span></div>
             </div>
-          </div>
-          <p class="muted small">
-            El RPM es lo que ganas tú por cada 1.000 visualizaciones tras el reparto de YouTube.
-            Puedes ajustarlo según tu nicho (finanzas y tecnología pagan más que entretenimiento).
-          </p>
-        </div>
 
-        <div class="results">
-          <div class="stat">
-            <span class="stat-label">Vistas / mes</span>
-            <span class="stat-value" id="viewsMonth">600.000</span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">Vistas / año</span>
-            <span class="stat-value" id="viewsYear">7.300.000</span>
-          </div>
-          <div class="stat highlight">
-            <span class="stat-label">Ganancias diarias estimadas</span>
-            <span class="stat-value" id="earnDay">$28,60 – $47,60</span>
-          </div>
-          <div class="stat highlight">
-            <span class="stat-label">Ganancias mensuales estimadas</span>
-            <span class="stat-value" id="earnMonth">$858 – $1.428</span>
-          </div>
-          <div class="stat highlight big">
-            <span class="stat-label">Ganancias anuales proyectadas</span>
-            <span class="stat-value" id="earnYear">$10.439 – $17.374</span>
-          </div>
-          <div class="stat net">
-            <span class="stat-label">Neto tras impuestos / mes</span>
-            <span class="stat-value" id="netMonth">—</span>
-          </div>
-          <div class="stat net">
-            <span class="stat-label">Neto tras impuestos / año</span>
-            <span class="stat-value" id="netYear">—</span>
-          </div>
-          <p class="muted small">
-            Rango según tu engagement (mayor engagement → anuncios mejor pagados y mayor variación). El
-            <strong>neto</strong> descuenta IVA/retención/IRPF según los ajustes de <a href="#neto">Del bruto al neto</a>.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="proyeccion" class="card">
-      <h2>Proyección de ingresos a 12 meses</h2>
-      <p class="muted small">
-        Estimación acumulada usando tus vistas actuales, tu RPM y un crecimiento mensual compuesto.
-      </p>
-      <div class="proj-controls">
-        <label for="growth">Crecimiento mensual de las vistas: <output id="growthOut" class="out">5 %</output></label>
-        <input id="growth" type="range" min="-20" max="30" step="1" value="5" />
-      </div>
-      <div class="chart-wrap">
-        <svg id="projChart" viewBox="0 0 820 320" role="img"
-             aria-label="Proyección de ingresos acumulados a 12 meses" preserveAspectRatio="xMidYMid meet"></svg>
-      </div>
-      <div class="chart-legend">
-        <span><i class="sw-line"></i> Escenario alto</span>
-        <span><i class="sw-dash"></i> Escenario bajo</span>
-        <span><i class="sw-band"></i> Rango estimado</span>
-      </div>
-      <p class="proj-total">Ingresos acumulados a 12 meses: <strong id="projTotal">—</strong></p>
-    </section>
-
-    <section id="por-enlace" class="card by-url">
-      <h2>Calcula por enlace de canal o vídeo</h2>
-      <p class="muted">
-        Pega el enlace de un <strong>canal</strong> o de un <strong>vídeo</strong> concreto y obtén una
-        estimación de ganancias basada en sus datos públicos (vistas, suscriptores y número de vídeos).
-      </p>
-      <p class="muted small">
-        RPM usado: <strong id="rpmUsed">$1,43 – $2,38</strong> por 1.000 vistas · ajústalo en la calculadora de arriba.
-      </p>
-
-      <div class="url-grid">
-        <div class="url-box">
-          <h3>📺 Por canal</h3>
-          <label for="channelUrl">Enlace del canal</label>
-          <div class="input-row">
-            <input id="channelUrl" type="text" inputmode="url" autocomplete="off"
-                   placeholder="https://www.youtube.com/@MrBeast" />
-            <button id="channelBtn" class="btn" type="button">Analizar</button>
-          </div>
-          <p class="msg" id="channelMsg" role="status"></p>
-          <div class="url-result hidden" id="channelResult"></div>
-        </div>
-
-        <div class="url-box">
-          <h3>🎬 Por vídeo</h3>
-          <label for="videoUrl">Enlace del vídeo</label>
-          <div class="input-row">
-            <input id="videoUrl" type="text" inputmode="url" autocomplete="off"
-                   placeholder="https://youtu.be/dQw4w9WgXcQ" />
-            <button id="videoBtn" class="btn" type="button">Analizar</button>
-          </div>
-          <p class="msg" id="videoMsg" role="status"></p>
-          <div class="url-result hidden" id="videoResult"></div>
-        </div>
-      </div>
-
-      <p class="muted small">
-        Datos vía <strong>YouTube Data API v3</strong> (oficial) para canales y vídeos, con respaldo automático de
-        fuentes públicas (<strong>SocialCounts</strong>, <strong>oEmbed</strong>, <strong>Return YouTube Dislike</strong>).
-        YouTube no publica las ganancias reales: el resultado es una estimación orientativa.
-      </p>
-    </section>
-
-    <section class="card">
-      <h2>¿Cómo funciona la calculadora?</h2>
-      <ul class="steps">
-        <li><strong>Vistas de vídeo diarias:</strong> desliza el contador para fijar las visualizaciones que recibes al día.</li>
-        <li><strong>Engagement:</strong> ajusta tu tasa media de interacción (likes, comentarios, compartidos).</li>
-        <li><strong>RPM:</strong> define cuánto se paga por cada 1.000 vistas monetizadas en tu nicho.</li>
-      </ul>
-      <p class="muted">
-        La estimación es <strong>antes</strong> del reparto de la plataforma: en los vídeos largos Google se queda
-        con el 45 % de los ingresos publicitarios y tú recibes el 55 % de cada dólar pagado por los anunciantes
-        (mira <a href="#impuestos">Reparto e impuestos</a> para Shorts, membresías y la parte fiscal). Si un
-        vídeo recibe publicidad con un CPM medio de $7,60, tu ingreso sería 55 % × $7,60 = <strong>$4,18 por cada
-        1.000 impresiones monetizadas</strong>. La calculadora aplica tu RPM a las vistas para darte un rango
-        realista.
-      </p>
-    </section>
-
-    <section id="impuestos" class="card">
-      <h2>¿Con cuánto se queda YouTube y cuánto se paga de impuestos?</h2>
-      <p class="muted small">Datos según la documentación oficial del Programa de Partners de YouTube / Google.</p>
-
-      <h3>Reparto de ingresos (revenue share)</h3>
-      <div class="table-wrap">
-        <table class="rate-table">
-          <thead>
-            <tr><th>Fuente de ingresos</th><th>Tú (creador)</th><th>YouTube</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Anuncios en vídeos largos (Watch Page)</td><td class="ok">55 %</td><td>45 %</td></tr>
-            <tr><td>Anuncios de Shorts (Shorts Feed Ads)</td><td class="ok">45 %</td><td>55 %</td></tr>
-            <tr><td>Membresías, Super Chat, Super Stickers y Super Thanks</td><td class="ok">70 %</td><td>30 %</td></tr>
-            <tr><td>YouTube Premium</td><td colspan="2">Reparto según tu tiempo de visualización</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="muted small">
-        El 55 % de los vídeos largos se calcula sobre los <em>ingresos netos</em>. En Shorts el reparto sale de un
-        fondo común (Creator Pool) que se asigna según tu porcentaje de vistas elegibles.
-      </p>
-
-      <h3>Impuestos</h3>
-      <ul class="steps">
-        <li>
-          <strong>IVA / IGIC / GST / impuesto de ventas:</strong> los impuestos sobre transacciones <em>no</em> son
-          ingresos de Google y no entran en el reparto. El porcentaje de arriba se calcula sobre el importe sin
-          impuestos; el IVA se suma aparte (si facturas con IVA, Google te lo paga además de tus ganancias).
-        </li>
-        <li>
-          <strong>Retención de impuestos de EE. UU.:</strong> Google retiene sobre lo que ganas con
-          <em>espectadores en Estados Unidos</em>:
-          <ul>
-            <li>Creadores <strong>fuera de EE. UU.</strong>: retención del <strong>0 % al 30 %</strong> según tu país y
-              el tratado fiscal (formulario W-8BEN). Si no envías datos fiscales, pueden retener al tipo máximo.</li>
-            <li>Creadores de <strong>EE. UU.</strong>: sin retención si entregas el W-9.</li>
-            <li>Reclama el beneficio del tratado antes del <strong>10 de diciembre</strong> de cada año; con datos
-              actualizados, Google recalcula y puede devolver la diferencia.</li>
-          </ul>
-        </li>
-        <li>
-          <strong>Impuesto sobre la renta (IRPF/IRNR):</strong> tus ingresos son renta y tributan en tu país de
-          residencia. Los tratados fiscales evitan la doble imposición y suelen permitir un crédito por los
-          impuestos pagados en el extranjero.
-        </li>
-      </ul>
-      <p class="muted small">
-        En España/Austria: si facturas como autónomo con IVA, el IVA se añade al pago de Google (no es tu ganancia:
-        se declara y se ingresa). Esto es información general, <strong>no asesoramiento fiscal</strong>: consulta a
-        un asesor.
-      </p>
-    </section>
-
-    <section id="neto" class="card">
-      <h2>Del bruto al neto: IVA, retención y renta</h2>
-      <p class="muted small">Parte de tus ganancias estimadas y aplica la fiscalidad para ver qué te queda realmente.</p>
-      <div class="tax-grid">
-        <div class="tax-controls">
-          <div class="field">
-            <label for="usRate">Retención EE. UU.<output id="usRateOut" class="out">15 %</output></label>
-            <input id="usRate" type="range" min="0" max="30" step="1" value="15" />
-            <div class="range-hint"><span>0 %</span><span>30 %</span></div>
-          </div>
-          <div class="field">
-            <label for="usShare">Audiencia desde EE. UU.<output id="usShareOut" class="out">40 %</output></label>
-            <input id="usShare" type="range" min="0" max="100" step="1" value="40" />
-            <div class="range-hint"><span>0 %</span><span>100 %</span></div>
-          </div>
-          <div class="field two">
-            <div>
-              <label for="vatMode">Régimen de IVA</label>
-              <select id="vatMode">
-                <option value="off" selected>Sin IVA (particular)</option>
-                <option value="on">Con IVA (autónomo/empresa)</option>
+            <div class="field">
+              <label for="niche">Nicho del canal <span class="muted small">(ajusta el RPM automáticamente)</span></label>
+              <select id="niche">
+                <option data-low="1.43" data-high="2.38" selected>General / mixto</option>
+                <option data-low="5.00" data-high="12.00">Finanzas e inversión</option>
+                <option data-low="4.00" data-high="10.00">Marketing y negocios</option>
+                <option data-low="3.00" data-high="8.00">Tecnología y software</option>
+                <option data-low="3.00" data-high="8.00">Inmobiliaria</option>
+                <option data-low="2.00" data-high="5.00">Salud y fitness</option>
+                <option data-low="2.00" data-high="4.50">Educación</option>
+                <option data-low="1.50" data-high="4.00">Belleza y moda</option>
+                <option data-low="1.50" data-high="4.00">Automoción</option>
+                <option data-low="1.20" data-high="3.50">Viajes</option>
+                <option data-low="1.00" data-high="3.00">Cocina y gastronomía</option>
+                <option data-low="1.00" data-high="3.00">Deportes</option>
+                <option data-low="0.80" data-high="2.50">Gaming</option>
+                <option data-low="0.50" data-high="2.00">Entretenimiento / vlogs</option>
+                <option data-low="0.30" data-high="1.20">Música / infantil</option>
               </select>
             </div>
-            <div>
-              <label for="vatRate">Tipo de IVA (%)</label>
-              <input id="vatRate" type="number" min="0" max="27" step="0.5" value="21" disabled />
+
+            <div class="field two">
+              <div>
+                <label for="rpmLow">RPM bajo (USD / 1.000 vistas)</label>
+                <input id="rpmLow" type="number" min="0" step="0.01" value="1.43" />
+              </div>
+              <div>
+                <label for="rpmHigh">RPM alto (USD / 1.000 vistas)</label>
+                <input id="rpmHigh" type="number" min="0" step="0.01" value="2.38" />
+              </div>
             </div>
+            <p class="muted small">
+              El RPM es lo que ganas tú por cada 1.000 visualizaciones tras el reparto de YouTube.
+              Puedes ajustarlo según tu nicho (finanzas y tecnología pagan más que entretenimiento).
+            </p>
           </div>
-          <div class="field">
-            <label for="irpf">Impuesto sobre la renta (IRPF) estimado<output id="irpfOut" class="out">20 %</output></label>
-            <input id="irpf" type="range" min="0" max="50" step="1" value="20" />
-            <div class="range-hint"><span>0 %</span><span>50 %</span></div>
+
+          <div class="results">
+            <div class="stat">
+              <span class="stat-label">Vistas / mes</span>
+              <span class="stat-value" id="viewsMonth">600.000</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Vistas / año</span>
+              <span class="stat-value" id="viewsYear">7.300.000</span>
+            </div>
+            <div class="stat highlight">
+              <span class="stat-label">Ganancias diarias estimadas</span>
+              <span class="stat-value" id="earnDay">$28,60 – $47,60</span>
+            </div>
+            <div class="stat highlight">
+              <span class="stat-label">Ganancias mensuales estimadas</span>
+              <span class="stat-value" id="earnMonth">$858 – $1.428</span>
+            </div>
+            <div class="stat highlight big">
+              <span class="stat-label">Ganancias anuales proyectadas</span>
+              <span class="stat-value" id="earnYear">$10.439 – $17.374</span>
+            </div>
+            <div class="stat net">
+              <span class="stat-label">Neto tras impuestos / mes</span>
+              <span class="stat-value" id="netMonth">—</span>
+            </div>
+            <div class="stat net">
+              <span class="stat-label">Neto tras impuestos / año</span>
+              <span class="stat-value" id="netYear">—</span>
+            </div>
+            <p class="muted small">
+              Rango según tu engagement (mayor engagement → anuncios mejor pagados y mayor variación). El
+              <strong>neto</strong> descuenta IVA/retención/IRPF según los ajustes de <a href="#neto">Del bruto al neto</a>.
+            </p>
           </div>
         </div>
-        <div class="tax-results" id="taxResults"></div>
-      </div>
-      <p class="muted small">
-        La retención de EE. UU. solo grava lo ganado con espectadores de EE. UU. El IVA que añade Google no es tu
-        ganancia: se declara e ingresa a Hacienda. La renta (IRPF) tributa en tu país de residencia. Estimación
-        orientativa, <strong>no asesoramiento fiscal</strong>.
-      </p>
-    </section>
+      </section>
 
-    <section id="factores" class="card">
-      <h2>4 Factores que determinan el potencial de tus ganancias en YouTube</h2>
-      <div class="factors">
-        <article class="factor">
-          <h3>1. CPM vs CPC</h3>
-          <p>El <strong>CPM</strong> es lo que paga el anunciante por 1.000 impresiones; el <strong>CPC</strong>,
-          por cada clic. Un CPM alto en tu nicho eleva directamente tus ingresos.</p>
-        </article>
-        <article class="factor">
-          <h3>2. Ingresos brutos por 1.000 visualizaciones</h3>
-          <p>No todas las vistas muestran anuncio (bloqueadores, países sin subastas…). El porcentaje de vistas
-          monetizadas marca la diferencia real.</p>
-        </article>
-        <article class="factor">
-          <h3>3. Ganancias por suscriptor</h3>
-          <p>Una audiencia fiel y comprometida vale más: más suscriptores fieles = más vistas recurrentes y mejor
-          rendimiento publicitario.</p>
-        </article>
-        <article class="factor">
-          <h3>4. Varianza según el engagement</h3>
-          <p>El engagement (likes, comentarios, tiempo de visualización) ajusta la horquilla de ingresos: a más
-          interacción, más probable es acertar con anuncios mejor pagados.</p>
-        </article>
-      </div>
-    </section>
+      <!-- PROYECCIÓN -->
+      <section id="proyeccion" class="panel card">
+        <h2>Proyección de ingresos a 12 meses</h2>
+        <p class="muted small">
+          Estimación acumulada usando tus vistas actuales, tu RPM y un crecimiento mensual compuesto.
+        </p>
+        <div class="proj-controls">
+          <label for="growth">Crecimiento mensual de las vistas: <output id="growthOut" class="out">5 %</output></label>
+          <input id="growth" type="range" min="-20" max="30" step="1" value="5" />
+        </div>
+        <div class="chart-wrap">
+          <svg id="projChart" viewBox="0 0 820 320" role="img"
+               aria-label="Proyección de ingresos acumulados a 12 meses" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+        <div class="chart-legend">
+          <span><i class="sw-line"></i> Escenario alto</span>
+          <span><i class="sw-dash"></i> Escenario bajo</span>
+          <span><i class="sw-band"></i> Rango estimado</span>
+        </div>
+        <p class="proj-total">Ingresos acumulados a 12 meses: <strong id="projTotal">—</strong></p>
+      </section>
 
-    <section id="monetizacion" class="card">
-      <h2>Pasos para habilitar la monetización de tus vídeos</h2>
-      <ol class="steps">
-        <li>Habilita tu cuenta para monetización y acepta el acuerdo de monetización de YouTube.</li>
-        <li>Conecta tu canal a una cuenta de AdSense (nueva o existente).</li>
-        <li>Cumple los criterios del Programa de Partners de YouTube (1.000 suscriptores y 4.000 horas de
-        visualización públicas en 12 meses, o 1.000 suscriptores y 10 millones de vistas de Shorts en 90 días).</li>
-        <li>Revisa los criterios de contenido y formatos de anuncios: solo se monetizan los vídeos compatibles con
-        los intereses de los anunciantes.</li>
-        <li>Optimiza títulos, miniaturas y retención para elevar las vistas monetizadas y tu RPM real.</li>
-      </ol>
-      <p class="muted small">
-        Los valores mostrados son estimaciones orientativas y no garantizan ingresos futuros.
-      </p>
-    </section>
-  </main>
+      <!-- POR ENLACE -->
+      <section id="por-enlace" class="panel card by-url">
+        <h2>Calcula por enlace de canal o vídeo</h2>
+        <p class="muted">
+          Pega el enlace de un <strong>canal</strong> o de un <strong>vídeo</strong> concreto y obtén una
+          estimación de ganancias basada en sus datos públicos (vistas, suscriptores y número de vídeos).
+        </p>
+        <p class="muted small">
+          RPM usado: <strong id="rpmUsed">$1,43 – $2,38</strong> por 1.000 vistas · ajústalo en la calculadora.
+        </p>
+
+        <div class="url-grid">
+          <div class="url-box">
+            <h3>📺 Por canal</h3>
+            <label for="channelUrl">Enlace del canal</label>
+            <div class="input-row">
+              <input id="channelUrl" type="text" inputmode="url" autocomplete="off"
+                     placeholder="https://www.youtube.com/@MrBeast" />
+              <button id="channelBtn" class="btn" type="button">Analizar</button>
+            </div>
+            <p class="msg" id="channelMsg" role="status"></p>
+            <div class="url-result hidden" id="channelResult"></div>
+          </div>
+
+          <div class="url-box">
+            <h3>🎬 Por vídeo</h3>
+            <label for="videoUrl">Enlace del vídeo</label>
+            <div class="input-row">
+              <input id="videoUrl" type="text" inputmode="url" autocomplete="off"
+                     placeholder="https://youtu.be/dQw4w9WgXcQ" />
+              <button id="videoBtn" class="btn" type="button">Analizar</button>
+            </div>
+            <p class="msg" id="videoMsg" role="status"></p>
+            <div class="url-result hidden" id="videoResult"></div>
+          </div>
+        </div>
+
+        <p class="muted small">
+          Datos vía <strong>YouTube Data API v3</strong> (oficial) para canales y vídeos, con respaldo automático de
+          fuentes públicas (<strong>SocialCounts</strong>, <strong>oEmbed</strong>, <strong>Return YouTube Dislike</strong>).
+          YouTube no publica las ganancias reales: el resultado es una estimación orientativa.
+        </p>
+      </section>
+
+      <!-- REPARTO E IMPUESTOS -->
+      <section id="impuestos" class="panel card">
+        <h2>¿Con cuánto se queda YouTube y cuánto se paga de impuestos?</h2>
+        <p class="muted small">Datos según la documentación oficial del Programa de Partners de YouTube / Google.</p>
+
+        <h3>Reparto de ingresos (revenue share)</h3>
+        <div class="table-wrap">
+          <table class="rate-table">
+            <thead>
+              <tr><th>Fuente de ingresos</th><th>Tú (creador)</th><th>YouTube</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Anuncios en vídeos largos (Watch Page)</td><td class="ok">55 %</td><td>45 %</td></tr>
+              <tr><td>Anuncios de Shorts (Shorts Feed Ads)</td><td class="ok">45 %</td><td>55 %</td></tr>
+              <tr><td>Membresías, Super Chat, Super Stickers y Super Thanks</td><td class="ok">70 %</td><td>30 %</td></tr>
+              <tr><td>YouTube Premium</td><td colspan="2">Reparto según tu tiempo de visualización</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="muted small">
+          El 55 % de los vídeos largos se calcula sobre los <em>ingresos netos</em>. En Shorts el reparto sale de un
+          fondo común (Creator Pool) que se asigna según tu porcentaje de vistas elegibles.
+        </p>
+
+        <h3>Impuestos</h3>
+        <ul class="steps">
+          <li>
+            <strong>IVA / IGIC / GST / impuesto de ventas:</strong> los impuestos sobre transacciones <em>no</em> son
+            ingresos de Google y no entran en el reparto. El porcentaje de arriba se calcula sobre el importe sin
+            impuestos; el IVA se suma aparte (si facturas con IVA, Google te lo paga además de tus ganancias).
+          </li>
+          <li>
+            <strong>Retención de impuestos de EE. UU.:</strong> Google retiene sobre lo que ganas con
+            <em>espectadores en Estados Unidos</em>:
+            <ul>
+              <li>Creadores <strong>fuera de EE. UU.</strong>: retención del <strong>0 % al 30 %</strong> según tu país y
+                el tratado fiscal (formulario W-8BEN). Si no envías datos fiscales, pueden retener al tipo máximo.</li>
+              <li>Creadores de <strong>EE. UU.</strong>: sin retención si entregas el W-9.</li>
+              <li>Reclama el beneficio del tratado antes del <strong>10 de diciembre</strong> de cada año; con datos
+                actualizados, Google recalcula y puede devolver la diferencia.</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Impuesto sobre la renta (IRPF/IRNR):</strong> tus ingresos son renta y tributan en tu país de
+            residencia. Los tratados fiscales evitan la doble imposición y suelen permitir un crédito por los
+            impuestos pagados en el extranjero.
+          </li>
+        </ul>
+        <p class="muted small">
+          En España/Austria: si facturas como autónomo con IVA, el IVA se añade al pago de Google (no es tu ganancia:
+          se declara y se ingresa). Esto es información general, <strong>no asesoramiento fiscal</strong>: consulta a
+          un asesor.
+        </p>
+      </section>
+
+      <!-- DEL BRUTO AL NETO -->
+      <section id="neto" class="panel card">
+        <h2>Del bruto al neto: IVA, retención y renta</h2>
+        <p class="muted small">Parte de tus ganancias estimadas y aplica la fiscalidad para ver qué te queda realmente.</p>
+        <div class="tax-grid">
+          <div class="tax-controls">
+            <div class="field">
+              <label for="usRate">Retención EE. UU.<output id="usRateOut" class="out">15 %</output></label>
+              <input id="usRate" type="range" min="0" max="30" step="1" value="15" />
+              <div class="range-hint"><span>0 %</span><span>30 %</span></div>
+            </div>
+            <div class="field">
+              <label for="usShare">Audiencia desde EE. UU.<output id="usShareOut" class="out">40 %</output></label>
+              <input id="usShare" type="range" min="0" max="100" step="1" value="40" />
+              <div class="range-hint"><span>0 %</span><span>100 %</span></div>
+            </div>
+            <div class="field two">
+              <div>
+                <label for="vatMode">Régimen de IVA</label>
+                <select id="vatMode">
+                  <option value="off" selected>Sin IVA (particular)</option>
+                  <option value="on">Con IVA (autónomo/empresa)</option>
+                </select>
+              </div>
+              <div>
+                <label for="vatRate">Tipo de IVA (%)</label>
+                <input id="vatRate" type="number" min="0" max="27" step="0.5" value="21" disabled />
+              </div>
+            </div>
+            <div class="field">
+              <label for="irpf">Impuesto sobre la renta (IRPF) estimado<output id="irpfOut" class="out">20 %</output></label>
+              <input id="irpf" type="range" min="0" max="50" step="1" value="20" />
+              <div class="range-hint"><span>0 %</span><span>50 %</span></div>
+            </div>
+          </div>
+          <div class="tax-results" id="taxResults"></div>
+        </div>
+        <p class="muted small">
+          La retención de EE. UU. solo grava lo ganado con espectadores de EE. UU. El IVA que añade Google no es tu
+          ganancia: se declara e ingresa a Hacienda. La renta (IRPF) tributa en tu país de residencia. Estimación
+          orientativa, <strong>no asesoramiento fiscal</strong>.
+        </p>
+      </section>
+
+      <!-- FACTORES -->
+      <section id="factores" class="panel card">
+        <h2>4 Factores que determinan el potencial de tus ganancias en YouTube</h2>
+        <div class="factors">
+          <article class="factor">
+            <h3>1. CPM vs CPC</h3>
+            <p>El <strong>CPM</strong> es lo que paga el anunciante por 1.000 impresiones; el <strong>CPC</strong>,
+            por cada clic. Un CPM alto en tu nicho eleva directamente tus ingresos.</p>
+          </article>
+          <article class="factor">
+            <h3>2. Ingresos brutos por 1.000 visualizaciones</h3>
+            <p>No todas las vistas muestran anuncio (bloqueadores, países sin subastas…). El porcentaje de vistas
+            monetizadas marca la diferencia real.</p>
+          </article>
+          <article class="factor">
+            <h3>3. Ganancias por suscriptor</h3>
+            <p>Una audiencia fiel y comprometida vale más: más suscriptores fieles = más vistas recurrentes y mejor
+            rendimiento publicitario.</p>
+          </article>
+          <article class="factor">
+            <h3>4. Varianza según el engagement</h3>
+            <p>El engagement (likes, comentarios, tiempo de visualización) ajusta la horquilla de ingresos: a más
+            interacción, más probable es acertar con anuncios mejor pagados.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- CÓMO FUNCIONA -->
+      <section id="como-funciona" class="panel card">
+        <h2>¿Cómo funciona la calculadora?</h2>
+        <ul class="steps">
+          <li><strong>Vistas de vídeo diarias:</strong> desliza el contador para fijar las visualizaciones que recibes al día.</li>
+          <li><strong>Engagement:</strong> ajusta tu tasa media de interacción (likes, comentarios, compartidos).</li>
+          <li><strong>RPM:</strong> define cuánto se paga por cada 1.000 vistas monetizadas en tu nicho.</li>
+        </ul>
+        <p class="muted">
+          La estimación es <strong>antes</strong> del reparto de la plataforma: en los vídeos largos Google se queda
+          con el 45 % de los ingresos publicitarios y tú recibes el 55 % de cada dólar pagado por los anunciantes
+          (mira <a href="#impuestos">Reparto e impuestos</a> para Shorts, membresías y la parte fiscal). Si un
+          vídeo recibe publicidad con un CPM medio de $7,60, tu ingreso sería 55 % × $7,60 = <strong>$4,18 por cada
+          1.000 impresiones monetizadas</strong>. La calculadora aplica tu RPM a las vistas para darte un rango
+          realista.
+        </p>
+      </section>
+
+      <!-- MONETIZACIÓN -->
+      <section id="monetizacion" class="panel card">
+        <h2>Pasos para habilitar la monetización de tus vídeos</h2>
+        <ol class="steps">
+          <li>Habilita tu cuenta para monetización y acepta el acuerdo de monetización de YouTube.</li>
+          <li>Conecta tu canal a una cuenta de AdSense (nueva o existente).</li>
+          <li>Cumple los criterios del Programa de Partners de YouTube (1.000 suscriptores y 4.000 horas de
+          visualización públicas en 12 meses, o 1.000 suscriptores y 10 millones de vistas de Shorts en 90 días).</li>
+          <li>Revisa los criterios de contenido y formatos de anuncios: solo se monetizan los vídeos compatibles con
+          los intereses de los anunciantes.</li>
+          <li>Optimiza títulos, miniaturas y retención para elevar las vistas monetizadas y tu RPM real.</li>
+        </ol>
+        <p class="muted small">
+          Los valores mostrados son estimaciones orientativas y no garantizan ingresos futuros.
+        </p>
+      </section>
+    </main>
+  </div>
 
   <footer class="site-footer">
     <p>Calculadora de Dinero en YouTube · Herramienta educativa de estimación</p>
@@ -368,5 +387,6 @@
   <script src="chart.js"></script>
   <script src="tax.js"></script>
   <script src="youtube-url.js"></script>
+  <script src="nav.js"></script>
 </body>
 </html>
