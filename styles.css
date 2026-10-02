@@ -141,6 +141,16 @@ input[type="number"]:focus { outline: 2px solid var(--red); border-color: transp
 .steps { margin: 8px 0 14px; padding-left: 20px; }
 .steps li { margin-bottom: 8px; }
 
+/* Del bruto al neto */
+.tax-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 16px; }
+.tax-results {
+  background: linear-gradient(160deg, #fff 0%, #fff5f5 100%);
+  border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px;
+}
+.tax-results .stat { padding: 7px 0; }
+input[type="number"]:disabled { opacity: .5; cursor: not-allowed; }
+@media (max-width: 820px) { .tax-grid { grid-template-columns: 1fr; } }
+
 /* Tabla de reparto */
 .table-wrap { overflow-x: auto; margin: 12px 0 6px; }
 .rate-table { width: 100%; border-collapse: collapse; font-size: 0.94rem; }

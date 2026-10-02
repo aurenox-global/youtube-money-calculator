@@ -19,6 +19,7 @@
       <a href="#proyeccion">Proyección</a>
       <a href="#por-enlace">Por enlace</a>
       <a href="#impuestos">Reparto e impuestos</a>
+      <a href="#neto">Del bruto al neto</a>
       <a href="#factores">4 Factores</a>
       <a href="#monetizacion">Monetización</a>
     </nav>
@@ -262,6 +263,49 @@
       </p>
     </section>
 
+    <section id="neto" class="card">
+      <h2>Del bruto al neto: IVA, retención y renta</h2>
+      <p class="muted small">Parte de tus ganancias estimadas y aplica la fiscalidad para ver qué te queda realmente.</p>
+      <div class="tax-grid">
+        <div class="tax-controls">
+          <div class="field">
+            <label for="usRate">Retención EE. UU.<output id="usRateOut" class="out">15 %</output></label>
+            <input id="usRate" type="range" min="0" max="30" step="1" value="15" />
+            <div class="range-hint"><span>0 %</span><span>30 %</span></div>
+          </div>
+          <div class="field">
+            <label for="usShare">Audiencia desde EE. UU.<output id="usShareOut" class="out">40 %</output></label>
+            <input id="usShare" type="range" min="0" max="100" step="1" value="40" />
+            <div class="range-hint"><span>0 %</span><span>100 %</span></div>
+          </div>
+          <div class="field two">
+            <div>
+              <label for="vatMode">Régimen de IVA</label>
+              <select id="vatMode">
+                <option value="off" selected>Sin IVA (particular)</option>
+                <option value="on">Con IVA (autónomo/empresa)</option>
+              </select>
+            </div>
+            <div>
+              <label for="vatRate">Tipo de IVA (%)</label>
+              <input id="vatRate" type="number" min="0" max="27" step="0.5" value="21" disabled />
+            </div>
+          </div>
+          <div class="field">
+            <label for="irpf">Impuesto sobre la renta (IRPF) estimado<output id="irpfOut" class="out">20 %</output></label>
+            <input id="irpf" type="range" min="0" max="50" step="1" value="20" />
+            <div class="range-hint"><span>0 %</span><span>50 %</span></div>
+          </div>
+        </div>
+        <div class="tax-results" id="taxResults"></div>
+      </div>
+      <p class="muted small">
+        La retención de EE. UU. solo grava lo ganado con espectadores de EE. UU. El IVA que añade Google no es tu
+        ganancia: se declara e ingresa a Hacienda. La renta (IRPF) tributa en tu país de residencia. Estimación
+        orientativa, <strong>no asesoramiento fiscal</strong>.
+      </p>
+    </section>
+
     <section id="factores" class="card">
       <h2>4 Factores que determinan el potencial de tus ganancias en YouTube</h2>
       <div class="factors">
@@ -312,6 +356,7 @@
 
   <script src="script.js"></script>
   <script src="chart.js"></script>
+  <script src="tax.js"></script>
   <script src="youtube-url.js"></script>
 </body>
 </html>

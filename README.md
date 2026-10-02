@@ -95,6 +95,17 @@ Fuente: documentación oficial del Programa de Partners de YouTube / Google.
 
 > Información general, no asesoramiento fiscal.
 
+## 🧾 Del bruto al neto
+
+La calculadora incluye un panel que parte de tus ganancias estimadas y aplica:
+
+- **Retención de EE. UU.** (0–30 %) — solo sobre la parte de audiencia estadounidense.
+- **% de audiencia de EE. UU.** para ponderar la retención real.
+- **IVA** (con/sin régimen de IVA y tipo configurable) — informativo, se ingresa a Hacienda.
+- **IRPF** estimado (0–50 %).
+
+Salida: **neto en mano por mes y por año** (rango bajo–alto).
+
 ## 📄 Licencia
 
 MIT — ver [LICENSE](LICENSE).
