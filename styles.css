@@ -15,7 +15,7 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html { height: 100%; scroll-behavior: smooth; }
 
 body {
   margin: 0;
@@ -23,6 +23,10 @@ body {
   color: var(--ink);
   background: var(--bg);
   line-height: 1.6;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* la página no hace scroll */
 }
 
 /* Header */
@@ -58,18 +62,22 @@ body {
 .site-nav a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; }
 .site-nav a:hover { color: var(--red); }
 
-/* Layout + menú lateral */
-.layout { display: flex; align-items: flex-start; gap: 24px; max-width: 1240px; margin: 0 auto; padding: 24px 20px 40px; }
-.sidebar { flex: 0 0 232px; position: sticky; top: 68px; align-self: flex-start; }
+/* App-shell: cabecera + menú fijos; solo el contenido tiene su propio scroll interno */
+.layout { flex: 1 1 auto; min-height: 0; display: flex; align-items: stretch; gap: 24px; width: 100%; max-width: 1320px; margin: 0 auto; padding: 20px 20px 12px; }
+.sidebar { flex: 0 0 232px; height: 100%; overflow-y: auto; }
 .sidebar nav { display: flex; flex-direction: column; gap: 4px; }
 .sidebar a { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; text-decoration: none; color: var(--ink); font-weight: 600; font-size: 14px; }
 .sidebar a:hover { background: #eef1f6; }
 .sidebar a.active { background: var(--red); color: #fff; box-shadow: var(--shadow-sm); }
-.content { flex: 1 1 auto; min-width: 0; }
+.content { flex: 1 1 auto; min-width: 0; height: 100%; overflow-y: auto; padding-right: 8px; }
+.content::-webkit-scrollbar, .sidebar::-webkit-scrollbar { width: 10px; }
+.content::-webkit-scrollbar-thumb, .sidebar::-webkit-scrollbar-thumb { background: #cfd5df; border-radius: 999px; }
+.content::-webkit-scrollbar-track, .sidebar::-webkit-scrollbar-track { background: transparent; }
 .panel { display: none; }
 .panel.active { display: block; }
 .panel.card, .panel.hero { margin-top: 0; }
 .panel.hero { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px 28px; box-shadow: var(--shadow); }
+.site-footer { flex: 0 0 auto; padding: 12px 20px; }
 
 .hero { text-align: center; padding: 24px 0 8px; }
 .hero h1 { font-size: clamp(1.6rem, 3.4vw, 2.5rem); line-height: 1.2; margin: 0 0 12px; }
@@ -233,10 +241,11 @@ input[type="number"]:disabled { opacity: .5; cursor: not-allowed; }
   .factors { grid-template-columns: 1fr; }
   .site-nav { display: none; }
   .field.two { grid-template-columns: 1fr; }
-  .layout { flex-direction: column; gap: 14px; padding: 14px 14px 32px; }
-  .sidebar { position: static; flex: none; width: 100%; }
+  .layout { flex-direction: column; gap: 10px; padding: 10px 12px; }
+  .sidebar { flex: 0 0 auto; height: auto; overflow: visible; }
   .sidebar nav { flex-direction: row; overflow-x: auto; gap: 8px; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
   .sidebar a { white-space: nowrap; padding: 8px 12px; background: #fff; border: 1px solid var(--line); }
   .sidebar a.active { border-color: var(--red); }
-  .panel.hero { padding: 22px 18px; }
+  .content { padding-right: 4px; }
+  .panel.hero { padding: 20px 16px; }
 }
