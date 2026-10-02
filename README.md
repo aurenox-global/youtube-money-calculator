@@ -11,6 +11,8 @@ Inspirada en las calculadoras de ingresos de YouTube, con modelo transparente y 
 - 🎚️ Sliders para vistas diarias y tasa de engagement.
 - 💵 RPM (bajo/alto) configurable por nicho.
 - 📈 Vistas proyectadas mensuales y anuales.
+- 🔗 **Calculadora por enlace**: pega la URL de un **canal** o de un **vídeo** y obtén la estimación
+  automáticamente (suscriptores, vistas totales, nº de vídeos y ganancias aproximadas).
 - 🧮 Explicación transparente del reparto **55 % creador / 45 % YouTube**.
 - 📱 Diseño responsive (móvil, tablet, escritorio).
 - ⚡ 100 % estático: se puede abrir con doble clic o servir desde GitHub Pages.
@@ -49,12 +51,29 @@ ingreso_año       = ingreso_día × 365
 
 ```
 youtube-money-calculator/
-├── index.html    # estructura y contenido
-├── styles.css    # diseño responsive
-├── script.js     # lógica de la calculadora
+├── index.html      # estructura y contenido
+├── styles.css      # diseño responsive
+├── script.js       # lógica de la calculadora (vistas + engagement)
+├── youtube-url.js  # calculadora por enlace (canal / vídeo)
 ├── README.md
 └── LICENSE
 ```
+
+## 🔗 Cálculo por enlace
+
+Sin API key. Resuelve el enlace y consulta **fuentes públicas** con CORS:
+
+| Dato | Fuente |
+|------|--------|
+| Canal (suscriptores, vistas, nº vídeos) | SocialCounts |
+| Resolución de `@handle` → ID de canal | SocialCounts (búsqueda) |
+| Vistas y likes de un vídeo | Return YouTube Dislike (respaldo: Piped) |
+| Título, autor y miniatura | oEmbed de YouTube |
+
+- **Enlace de canal**: acepta `youtube.com/@handle`, `youtube.com/channel/UC…`, `youtube.com/c/…`, `youtube.com/user/…` o el `@handle` suelto.
+- **Enlace de vídeo**: acepta `youtube.com/watch?v=…`, `youtu.be/…`, `youtube.com/shorts/…`, `/embed/…`, `/live/…` o el ID de 11 caracteres.
+
+> El número real de ganancias no es público; los importes son estimaciones a partir de las vistas.
 
 ## 📄 Licencia
 

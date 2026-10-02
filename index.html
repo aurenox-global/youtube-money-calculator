@@ -16,6 +16,7 @@
     </a>
     <nav class="site-nav">
       <a href="#calculadora">Calculadora</a>
+      <a href="#proyeccion">Proyección</a>
       <a href="#por-enlace">Por enlace</a>
       <a href="#factores">4 Factores</a>
       <a href="#monetizacion">Monetización</a>
@@ -60,6 +61,27 @@
             <div class="range-hint"><span>0 %</span><span>20 %</span></div>
           </div>
 
+          <div class="field">
+            <label for="niche">Nicho del canal <span class="muted small">(ajusta el RPM automáticamente)</span></label>
+            <select id="niche">
+              <option data-low="1.43" data-high="2.38" selected>General / mixto</option>
+              <option data-low="5.00" data-high="12.00">Finanzas e inversión</option>
+              <option data-low="4.00" data-high="10.00">Marketing y negocios</option>
+              <option data-low="3.00" data-high="8.00">Tecnología y software</option>
+              <option data-low="3.00" data-high="8.00">Inmobiliaria</option>
+              <option data-low="2.00" data-high="5.00">Salud y fitness</option>
+              <option data-low="2.00" data-high="4.50">Educación</option>
+              <option data-low="1.50" data-high="4.00">Belleza y moda</option>
+              <option data-low="1.50" data-high="4.00">Automoción</option>
+              <option data-low="1.20" data-high="3.50">Viajes</option>
+              <option data-low="1.00" data-high="3.00">Cocina y gastronomía</option>
+              <option data-low="1.00" data-high="3.00">Deportes</option>
+              <option data-low="0.80" data-high="2.50">Gaming</option>
+              <option data-low="0.50" data-high="2.00">Entretenimiento / vlogs</option>
+              <option data-low="0.30" data-high="1.20">Música / infantil</option>
+            </select>
+          </div>
+
           <div class="field two">
             <div>
               <label for="rpmLow">RPM bajo (USD / 1.000 vistas)</label>
@@ -102,6 +124,27 @@
           </p>
         </div>
       </div>
+    </section>
+
+    <section id="proyeccion" class="card">
+      <h2>Proyección de ingresos a 12 meses</h2>
+      <p class="muted small">
+        Estimación acumulada usando tus vistas actuales, tu RPM y un crecimiento mensual compuesto.
+      </p>
+      <div class="proj-controls">
+        <label for="growth">Crecimiento mensual de las vistas: <output id="growthOut" class="out">5 %</output></label>
+        <input id="growth" type="range" min="-20" max="30" step="1" value="5" />
+      </div>
+      <div class="chart-wrap">
+        <svg id="projChart" viewBox="0 0 820 320" role="img"
+             aria-label="Proyección de ingresos acumulados a 12 meses" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+      <div class="chart-legend">
+        <span><i class="sw-line"></i> Escenario alto</span>
+        <span><i class="sw-dash"></i> Escenario bajo</span>
+        <span><i class="sw-band"></i> Rango estimado</span>
+      </div>
+      <p class="proj-total">Ingresos acumulados a 12 meses: <strong id="projTotal">—</strong></p>
     </section>
 
     <section id="por-enlace" class="card by-url">
@@ -212,6 +255,7 @@
   </footer>
 
   <script src="script.js"></script>
+  <script src="chart.js"></script>
   <script src="youtube-url.js"></script>
 </body>
 </html>
