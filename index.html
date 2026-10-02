@@ -16,6 +16,7 @@
     </a>
     <nav class="site-nav">
       <a href="#calculadora">Calculadora</a>
+      <a href="#por-enlace">Por enlace</a>
       <a href="#factores">4 Factores</a>
       <a href="#monetizacion">Monetización</a>
     </nav>
@@ -103,6 +104,49 @@
       </div>
     </section>
 
+    <section id="por-enlace" class="card by-url">
+      <h2>Calcula por enlace de canal o vídeo</h2>
+      <p class="muted">
+        Pega el enlace de un <strong>canal</strong> o de un <strong>vídeo</strong> concreto y obtén una
+        estimación de ganancias basada en sus datos públicos (vistas, suscriptores y número de vídeos).
+      </p>
+      <p class="muted small">
+        RPM usado: <strong id="rpmUsed">$1,43 – $2,38</strong> por 1.000 vistas · ajústalo en la calculadora de arriba.
+      </p>
+
+      <div class="url-grid">
+        <div class="url-box">
+          <h3>📺 Por canal</h3>
+          <label for="channelUrl">Enlace del canal</label>
+          <div class="input-row">
+            <input id="channelUrl" type="text" inputmode="url" autocomplete="off"
+                   placeholder="https://www.youtube.com/@MrBeast" />
+            <button id="channelBtn" class="btn" type="button">Analizar</button>
+          </div>
+          <p class="msg" id="channelMsg" role="status"></p>
+          <div class="url-result hidden" id="channelResult"></div>
+        </div>
+
+        <div class="url-box">
+          <h3>🎬 Por vídeo</h3>
+          <label for="videoUrl">Enlace del vídeo</label>
+          <div class="input-row">
+            <input id="videoUrl" type="text" inputmode="url" autocomplete="off"
+                   placeholder="https://youtu.be/dQw4w9WgXcQ" />
+            <button id="videoBtn" class="btn" type="button">Analizar</button>
+          </div>
+          <p class="msg" id="videoMsg" role="status"></p>
+          <div class="url-result hidden" id="videoResult"></div>
+        </div>
+      </div>
+
+      <p class="muted small">
+        Datos de fuentes públicas: <strong>SocialCounts</strong> (canales), <strong>oEmbed de YouTube</strong>
+        (título/miniatura) y <strong>Return YouTube Dislike</strong> (vistas de vídeo, con respaldo Piped).
+        YouTube no publica las ganancias reales: el resultado es una estimación orientativa.
+      </p>
+    </section>
+
     <section class="card">
       <h2>¿Cómo funciona la calculadora?</h2>
       <ul class="steps">
@@ -168,5 +212,6 @@
   </footer>
 
   <script src="script.js"></script>
+  <script src="youtube-url.js"></script>
 </body>
 </html>
