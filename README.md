@@ -75,6 +75,26 @@ Sin API key. Resuelve el enlace y consulta **fuentes públicas** con CORS:
 
 > El número real de ganancias no es público; los importes son estimaciones a partir de las vistas.
 
+## 💸 Reparto de ingresos e impuestos (resumen)
+
+Fuente: documentación oficial del Programa de Partners de YouTube / Google.
+
+**Reparto (revenue share)**
+
+- Anuncios en **vídeos largos** (Watch Page): **55 % creador / 45 % YouTube**.
+- Anuncios de **Shorts** (Shorts Feed Ads): **45 % creador / 55 % YouTube** (fondo común por vistas).
+- **Membresías, Super Chat, Super Stickers y Super Thanks:** **70 % creador / 30 % YouTube**.
+- **YouTube Premium:** reparto según tiempo de visualización.
+
+**Impuestos**
+
+- **IVA/IGIC/GST/sales tax:** no son ingreso de Google y quedan fuera del reparto (se suman aparte).
+- **Retención de EE. UU.:** 0–30 % sobre lo ganado con espectadores en EE. UU. para creadores no estadounidenses
+  (según tratado fiscal, W-8BEN); sin retención para creadores de EE. UU. con W-9. Reclamar tratado antes del 10 de diciembre.
+- **Renta:** tributa en el país de residencia; los tratados fiscales evitan la doble imposición.
+
+> Información general, no asesoramiento fiscal.
+
 ## 📄 Licencia
 
 MIT — ver [LICENSE](LICENSE).

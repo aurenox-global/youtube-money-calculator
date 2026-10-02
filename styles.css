@@ -141,6 +141,15 @@ input[type="number"]:focus { outline: 2px solid var(--red); border-color: transp
 .steps { margin: 8px 0 14px; padding-left: 20px; }
 .steps li { margin-bottom: 8px; }
 
+/* Tabla de reparto */
+.table-wrap { overflow-x: auto; margin: 12px 0 6px; }
+.rate-table { width: 100%; border-collapse: collapse; font-size: 0.94rem; }
+.rate-table th, .rate-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); }
+.rate-table thead th { background: #fbfcfe; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .03em; }
+.rate-table tbody tr:hover { background: #fbfcfe; }
+.rate-table td.ok { color: var(--red-dark); font-weight: 700; }
+.card h3 { margin: 18px 0 4px; font-size: 1.08rem; }
+
 /* Factors */
 .factors { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 14px; }
 .factor { background: #fbfcfe; border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
