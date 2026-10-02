@@ -1,8 +1,13 @@
-/* Calculadora por enlace (canal / vídeo) — datos públicos sin API key.
-   Fuentes: SocialCounts (canales), Return YouTube Dislike (vistas de vídeo),
-   oEmbed de YouTube (título/miniatura) y Piped (respaldo de vistas). */
+/* Calculadora por enlace (canal / vídeo).
+   Fuente PRIMARIA: YouTube Data API v3 (oficial, con API key restringida al dominio).
+   Respaldo: SocialCounts (canales), Return YouTube Dislike / Piped (vistas), oEmbed (título). */
 (function () {
   "use strict";
+
+  /* API key pública — restringida a youtube.googleapis.com y al dominio del sitio
+     (por eso es seguro exponerla en el cliente). */
+  var YT_API_KEY = "AIzaSyCBBrH2yg68JvlDvvD8nR8Dr_TM8sqHnzA";
+  var YT_API = "https://www.googleapis.com/youtube/v3/";
 
   var nf0 = new Intl.NumberFormat("es-ES", { maximumFractionDigits: 0 });
   var nf2 = new Intl.NumberFormat("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -39,7 +44,6 @@
     var e = earnRange(views);
     return usd(e[0]) + " – " + usd(e[1]);
   }
-
   /* Neto tras impuestos (retención EE. UU. / IVA / IRPF) según "Del bruto al neto" */
   function netStr(views) {
     if (window.YTTax && YTTax.net) {
@@ -60,6 +64,7 @@
         .catch(function (e) { clearTimeout(t); reject(e); });
     });
   }
+  function intOrNull(v) { return (v === undefined || v === null || v === "") ? null : parseInt(v, 10); }
 
   /* ---------- parseo de enlaces ---------- */
   function extractVideoId(input) {
@@ -74,19 +79,77 @@
     if (!input) return null;
     input = input.trim();
     if (/^UC[A-Za-z0-9_-]{22}$/.test(input)) return { kind: "id", value: input };
-    if (/^@[\w.\- ]+$/.test(input)) return { kind: "query", value: input.slice(1).trim() };
+    if (/^@[\w.\- ]+$/.test(input)) return { kind: "handle", value: input.slice(1).trim() };
     var m;
     m = input.match(/youtube\.com\/channel\/(UC[A-Za-z0-9_-]{22})/i);
     if (m) return { kind: "id", value: m[1] };
     m = input.match(/youtube\.com\/@([\w.\-]+)/i);
-    if (m) return { kind: "query", value: m[1] };
-    m = input.match(/youtube\.com\/(?:c|user)\/([\w.\-]+)/i);
+    if (m) return { kind: "handle", value: m[1] };
+    m = input.match(/youtube\.com\/user\/([\w.\-]+)/i);
+    if (m) return { kind: "user", value: m[1] };
+    m = input.match(/youtube\.com\/c\/([\w.\-]+)/i);
     if (m) return { kind: "query", value: m[1] };
     if (/^[\w.\- ]{2,}$/.test(input)) return { kind: "query", value: input };
     return null;
   }
 
-  /* ---------- fuentes de datos ---------- */
+  /* ---------- YOUTUBE DATA API v3 (oficial) ---------- */
+  function officialChannel(parsed) {
+    var base = YT_API + "channels?part=snippet,statistics&key=" + YT_API_KEY;
+    var p;
+    if (parsed.kind === "id") {
+      p = fetchJSON(base + "&id=" + encodeURIComponent(parsed.value)).then(function (r) {
+        var it = (r.items || [])[0]; if (!it) throw new Error("no-items"); return it;
+      });
+    } else if (parsed.kind === "handle") {
+      p = fetchJSON(base + "&forHandle=" + encodeURIComponent("@" + parsed.value)).then(function (r) {
+        var it = (r.items || [])[0]; if (!it) throw new Error("no-items"); return it;
+      });
+    } else if (parsed.kind === "user") {
+      p = fetchJSON(base + "&forUsername=" + encodeURIComponent(parsed.value)).then(function (r) {
+        var it = (r.items || [])[0]; if (!it) throw new Error("no-items"); return it;
+      });
+    } else {
+      /* búsqueda por nombre (search.list = 100 unidades) */
+      p = fetchJSON(YT_API + "search?part=snippet&type=channel&maxResults=1&q=" +
+        encodeURIComponent(parsed.value) + "&key=" + YT_API_KEY).then(function (r) {
+        var it = (r.items || [])[0]; if (!it) throw new Error("no-items");
+        return fetchJSON(base + "&id=" + it.id.channelId).then(function (r2) {
+          var c = (r2.items || [])[0]; if (!c) throw new Error("no-items"); return c;
+        });
+      });
+    }
+    return p.then(function (it) {
+      var s = it.statistics || {}, sn = it.snippet || {};
+      var th = sn.thumbnails || {};
+      return {
+        info: {
+          title: sn.title,
+          handle: sn.customUrl ? ("@" + String(sn.customUrl).replace(/^@/, "")) : "",
+          pfp: (th.medium || th.default || {}).url || ""
+        },
+        stats: {
+          subs: s.hiddenSubscriberCount ? null : intOrNull(s.subscriberCount),
+          views: intOrNull(s.viewCount) || 0,
+          videos: intOrNull(s.videoCount) || 0
+        }
+      };
+    });
+  }
+
+  function officialVideo(id) {
+    return fetchJSON(YT_API + "videos?part=snippet,statistics&id=" + encodeURIComponent(id) + "&key=" + YT_API_KEY)
+      .then(function (r) {
+        var it = (r.items || [])[0]; if (!it) throw new Error("no-items");
+        var s = it.statistics || {}, sn = it.snippet || {}, th = sn.thumbnails || {};
+        return {
+          meta: { title: sn.title, author: sn.channelTitle, thumb: (th.medium || th.default || {}).url || "" },
+          stats: { views: intOrNull(s.viewCount) || 0, likes: intOrNull(s.likeCount) || 0, source: "YouTube Data API v3" }
+        };
+      });
+  }
+
+  /* ---------- RESPALDO sin API key ---------- */
   var API_SEARCH = "https://api.socialcounts.org/youtube-live-subscriber-count/search/";
   var API_COUNT = "https://api.socialcounts.org/youtube-live-subscriber-count/";
 
@@ -98,7 +161,6 @@
       return items[0];
     });
   }
-
   function channelStats(id) {
     return fetchJSON(API_COUNT + id).then(function (res) {
       var c = (res && res.counters) || {};
@@ -107,23 +169,21 @@
       return { subs: e.subscriberCount || 0, views: e.viewCount || 0, videos: e.videoCount || 0 };
     });
   }
-
   function videoViews(id) {
     return fetchJSON("https://returnyoutubedislikeapi.com/votes?videoId=" + id).then(function (r) {
       if (r && typeof r.viewCount === "number") {
-        return { views: r.viewCount, likes: r.likes || 0, dislikes: r.dislikes || 0, source: "RYD" };
+        return { views: r.viewCount, likes: r.likes || 0, source: "Return YouTube Dislike" };
       }
       throw new Error("sin datos");
     }).catch(function () {
       return fetchJSON("https://api.piped.private.coffee/streams/" + id).then(function (p) {
         if (p && typeof p.views === "number") {
-          return { views: p.views, likes: p.likes || 0, dislikes: p.dislikes || 0, source: "Piped" };
+          return { views: p.views, likes: p.likes || 0, source: "Piped" };
         }
         throw new Error("Sin datos de vistas para este vídeo.");
       });
     });
   }
-
   function videoMeta(id) {
     return fetchJSON("https://www.youtube.com/oembed?url=" +
       encodeURIComponent("https://www.youtube.com/watch?v=" + id) + "&format=json")
@@ -137,21 +197,21 @@
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   }
-
   function kv(label, value) {
     return '<div class="kv"><span>' + label + '</span><b>' + value + '</b></div>';
   }
 
-  function renderChannel(el, info, stats) {
+  function renderChannel(el, info, stats, source) {
     var perVideo = stats.videos > 0 ? stats.views / stats.videos : 0;
     var handle = info.handle ? esc(info.handle) : "";
     var avatar = info.pfp ? '<img class="yt-avatar" src="' + esc(info.pfp) + '" alt="" loading="lazy" />' : "";
+    var subs = (stats.subs === null || stats.subs === undefined) ? "oculto" : n0(stats.subs);
     el.innerHTML =
       '<div class="yt-head">' + avatar +
         '<div><strong>' + esc(info.title || "Canal") + '</strong>' +
         (handle ? '<div class="muted small">' + handle + '</div>' : '') + '</div>' +
       '</div>' +
-      kv("Suscriptores", n0(stats.subs)) +
+      kv("Suscriptores", subs) +
       kv("Vistas totales", compact(stats.views) + " (" + n0(stats.views) + ")") +
       kv("Número de vídeos", n0(stats.videos)) +
       kv("Vistas medias por vídeo", compact(perVideo)) +
@@ -159,11 +219,11 @@
       '<div class="stat highlight"><span class="stat-label">Ganancias medias por vídeo (bruto)</span><span class="stat-value">' + earnStr(perVideo) + '</span></div>' +
       '<div class="stat net"><span class="stat-label">Neto tras impuestos (canal)</span><span class="stat-value">' + netStr(stats.views) + '</span></div>' +
       '<div class="stat net"><span class="stat-label">Neto medio por vídeo</span><span class="stat-value">' + netStr(perVideo) + '</span></div>' +
-      '<p class="muted small">El <strong>neto</strong> descuenta retención/IVA/IRPF según <a href="#neto">Del bruto al neto</a>.</p>';
+      '<p class="muted small">Datos vía <strong>' + esc(source || "API") + '</strong> · el <strong>neto</strong> descuenta retención/IVA/IRPF según <a href="#neto">Del bruto al neto</a>.</p>';
     el.classList.remove("hidden");
   }
 
-  function renderVideo(el, id, meta, stats) {
+  function renderVideo(el, id, meta, stats, source) {
     var thumb = meta && meta.thumb
       ? '<img class="yt-thumb" src="' + esc(meta.thumb) + '" alt="" loading="lazy" />'
       : '<img class="yt-thumb" src="https://i.ytimg.com/vi/' + esc(id) + '/mqdefault.jpg" alt="" loading="lazy" />';
@@ -178,7 +238,7 @@
       kv("Likes", n0(stats.likes)) +
       '<div class="stat highlight big"><span class="stat-label">Ganancias estimadas del vídeo (bruto)</span><span class="stat-value">' + earnStr(stats.views) + '</span></div>' +
       '<div class="stat net"><span class="stat-label">Neto tras impuestos</span><span class="stat-value">' + netStr(stats.views) + '</span></div>' +
-      '<p class="muted small">Vistas vía ' + esc(stats.source) + ' · el neto descuenta retención/IVA/IRPF.</p>';
+      '<p class="muted small">Datos vía <strong>' + esc(source || stats.source || "API") + '</strong> · el neto descuenta retención/IVA/IRPF.</p>';
     el.classList.remove("hidden");
   }
 
@@ -191,8 +251,8 @@
   var last = { channel: null, video: null };
 
   function refresh() {
-    if (last.channel) renderChannel(document.getElementById("channelResult"), last.channel.info, last.channel.stats);
-    if (last.video) renderVideo(document.getElementById("videoResult"), last.video.id, last.video.meta, last.video.stats);
+    if (last.channel) renderChannel(document.getElementById("channelResult"), last.channel.info, last.channel.stats, last.channel.source);
+    if (last.video) renderVideo(document.getElementById("videoResult"), last.video.id, last.video.meta, last.video.stats, last.video.source);
   }
 
   /* ---------- handlers ---------- */
@@ -205,15 +265,19 @@
     out.classList.add("hidden");
     if (!parsed) { setMsg(msg, "Pega un enlace de canal válido (p. ej. youtube.com/@MrBeast).", "err"); return; }
 
-    btn.disabled = true; setMsg(msg, "⏳ Consultando el canal…", "load");
-    resolveChannel(parsed)
-      .then(function (info) {
-        return channelStats(info.id).then(function (stats) { return { info: info, stats: stats }; });
+    btn.disabled = true; setMsg(msg, "⏳ Consultando la API oficial de YouTube…", "load");
+    officialChannel(parsed)
+      .then(function (r) { r.source = "YouTube Data API v3"; return r; })
+      .catch(function () {
+        setMsg(msg, "⏳ API oficial no disponible, usando fuente alternativa…", "load");
+        return resolveChannel(parsed).then(function (info) {
+          return channelStats(info.id).then(function (stats) { return { info: info, stats: stats, source: "SocialCounts (respaldo)" }; });
+        });
       })
       .then(function (r) {
-        last.channel = { info: r.info, stats: r.stats };
-        renderChannel(out, r.info, r.stats);
-        setMsg(msg, "✅ Datos obtenidos.", "ok");
+        last.channel = r;
+        renderChannel(out, r.info, r.stats, r.source);
+        setMsg(msg, "✅ Datos obtenidos (" + r.source + ").", "ok");
       })
       .catch(function (e) { setMsg(msg, "⚠️ " + (e && e.message ? e.message : "No se pudo obtener el canal."), "err"); })
       .finally(function () { btn.disabled = false; });
@@ -228,12 +292,19 @@
     out.classList.add("hidden");
     if (!id) { setMsg(msg, "Pega un enlace de vídeo válido (youtube.com/watch?v=… o youtu.be/…).", "err"); return; }
 
-    btn.disabled = true; setMsg(msg, "⏳ Consultando el vídeo…", "load");
-    Promise.all([videoViews(id), videoMeta(id)])
+    btn.disabled = true; setMsg(msg, "⏳ Consultando la API oficial de YouTube…", "load");
+    officialVideo(id)
+      .then(function (r) { return { id: id, meta: r.meta, stats: r.stats, source: "YouTube Data API v3" }; })
+      .catch(function () {
+        setMsg(msg, "⏳ API oficial no disponible, usando fuente alternativa…", "load");
+        return Promise.all([videoViews(id), videoMeta(id)]).then(function (r2) {
+          return { id: id, meta: r2[1], stats: r2[0], source: (r2[0] && r2[0].source) || "respaldo" };
+        });
+      })
       .then(function (r) {
-        last.video = { id: id, meta: r[1], stats: r[0] };
-        renderVideo(out, id, r[1], r[0]);
-        setMsg(msg, "✅ Datos obtenidos.", "ok");
+        last.video = r;
+        renderVideo(out, r.id, r.meta, r.stats, r.source);
+        setMsg(msg, "✅ Datos obtenidos (" + r.source + ").", "ok");
       })
       .catch(function (e) { setMsg(msg, "⚠️ " + (e && e.message ? e.message : "No se pudo obtener el vídeo."), "err"); })
       .finally(function () { btn.disabled = false; });

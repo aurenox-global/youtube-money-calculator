@@ -61,14 +61,16 @@ youtube-money-calculator/
 
 ## 🔗 Cálculo por enlace
 
-Sin API key. Resuelve el enlace y consulta **fuentes públicas** con CORS:
+Fuente **primaria: YouTube Data API v3 (oficial)** y respaldo automático de fuentes públicas con CORS:
 
-| Dato | Fuente |
-|------|--------|
-| Canal (suscriptores, vistas, nº vídeos) | SocialCounts |
-| Resolución de `@handle` → ID de canal | SocialCounts (búsqueda) |
-| Vistas y likes de un vídeo | Return YouTube Dislike (respaldo: Piped) |
-| Título, autor y miniatura | oEmbed de YouTube |
+| Dato | Fuente primaria | Respaldo |
+|------|-----------------|----------|
+| Canal (suscriptores, vistas, nº vídeos) | YouTube Data API v3 (`channels.list`) | SocialCounts |
+| Resolución de `@handle` → ID | `forHandle` / `forUsername` / `search` | SocialCounts (búsqueda) |
+| Vídeo (vistas, likes, título) | YouTube Data API v3 (`videos.list`) | Return YouTube Dislike + oEmbed |
+
+> La **API key** va en el cliente (`youtube-url.js`) pero está **restringida** a la API `youtube.googleapis.com` y
+> al dominio `https://aurenox-global.github.io/*` (por eso es seguro publicarla). Proyecto GCP: `yt-money-calc-35464`.
 
 - **Enlace de canal**: acepta `youtube.com/@handle`, `youtube.com/channel/UC…`, `youtube.com/c/…`, `youtube.com/user/…` o el `@handle` suelto.
 - **Enlace de vídeo**: acepta `youtube.com/watch?v=…`, `youtu.be/…`, `youtube.com/shorts/…`, `/embed/…`, `/live/…` o el ID de 11 caracteres.
